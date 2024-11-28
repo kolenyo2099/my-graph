@@ -164,13 +164,14 @@ function GraphLoader() {
 
     useEffect(() => {
         const loadData = async () => {
-            try {
-                // Update the path to use a relative path instead of PUBLIC_URL
-                const response = await fetch('/toembed.csv');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const text = await response.text();
+    try {
+        // Use a proper path that works in both development and production
+        const csvPath = process.env.PUBLIC_URL ? `${process.env.PUBLIC_URL}/toembed.csv` : '/toembed.csv';
+        const response = await fetch(csvPath);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const text = await response.text();
                 
                 Papa.parse(text, {
                     header: true,
