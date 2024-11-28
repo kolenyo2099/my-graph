@@ -69,7 +69,6 @@ const TweetPopup = ({ tweet, onClose }) => (
     </div>
 );
 
-// Color legend component
 const ColorLegend = () => {
     const legendItems = [
         { color: '#94A3B8', label: 'No engagement' },
@@ -166,7 +165,7 @@ function GraphLoader() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const response = await fetch('/toembed.csv');
+                const response = await fetch(`${process.env.PUBLIC_URL}/toembed.csv`);
                 const text = await response.text();
                 
                 Papa.parse(text, {
@@ -282,9 +281,11 @@ function GraphLoader() {
                     );
                 }
             },
-            onSelectResult: (node) => {
-                setSelectedTweet(node);
-                cosmographRef.current?.zoomToNode(node);
+            onSelect: (node) => {
+                if (node) {
+                    setSelectedTweet(node);
+                    cosmographRef.current?.zoomToNode(node);
+                }
             }
         }
     };
@@ -319,7 +320,7 @@ function GraphLoader() {
                     fontSize: '24px',
                     fontWeight: 'bold'
                 }}>
-                    #OSINT on Twitter 2020-2022
+                    #OSINT on Twitter 2020-2023
                 </h1>
                 <div style={{ 
                     fontSize: '16px',
