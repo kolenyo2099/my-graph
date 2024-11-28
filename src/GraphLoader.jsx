@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Cosmograph, useCosmograph, CosmographSearch } from '@cosmograph/react';
+import { Cosmograph, CosmographSearch } from '@cosmograph/react';
 import Papa from 'papaparse';
 
 const TweetPopup = ({ tweet, onClose }) => (
@@ -165,7 +165,11 @@ function GraphLoader() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const response = await fetch(`${process.env.PUBLIC_URL}/toembed.csv`);
+                // Update the path to use a relative path instead of PUBLIC_URL
+                const response = await fetch('/toembed.csv');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const text = await response.text();
                 
                 Papa.parse(text, {
